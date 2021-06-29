@@ -1,0 +1,13 @@
+{
+  "Python": {
+    "beautifiers": [
+      "Black",
+      "YAPF"
+    ]
+  },
+  "Vue": {
+    "beautifiers": [
+      "Prettier"
+    ]
+  }
+}

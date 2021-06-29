@@ -1,0 +1,75 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+  <div class="container" id="edit-bookmark">
+    <h1 class="title">Edit bookmark -
+      {{bookmark.title}}</h1>
+
+    <template v-if="errors.length > 0">
+      <article v-for="error in errors" class="message is-danger">
+        <div class="message-body">
+          [[ error ]]
+        </div>
+      </article>
+    </template>
+
+    <form @submit="submitForm" action="." method="post" novalidate="novalidate">
+      {% csrf_token %}
+
+      <div class="field">
+        <label for="title" class="label">{{form.title.label_tag}}</label>
+        <div class="control">{{form.title}}</div>
+      </div>
+
+      <div class="field">
+        <label for="url" class="label">{{form.url.label_tag}}</label>
+        <div class="control">{{form.url}}</div>
+      </div>
+
+      <div class="field">
+        <label for="description" class="label">{{form.description.label_tag}}</label>
+        <div class="control">{{form.description}}</div>
+      </div>
+
+      <div class="field">
+        <div class="control is-grouped">
+          <button type="submit" class="button is-primary">Update</button>
+          <a href="{% url 'category' category_id %}" class="button is-danger">Cancel</a>
+        </div>
+      </div>
+    </form>
+
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+  <script>
+    new Vue({
+      el: "#edit-bookmark",
+      delimiters: [
+        "[[", "]]"
+      ],
+      data() {
+        return {title: "{{form.title.value}}", url: "{{form.url.value}}", errors: []}
+      },
+      methods: {
+        submitForm(e) {
+          this.errors = []
+          if (!this.title) {
+            e.preventDefault();
+            this
+              .errors
+              .push("Title is required");
+          }
+
+          if (!this.url) {
+            e.preventDefault();
+            this
+              .errors
+              .push("Url is required");
+          }
+        }
+      }
+    })
+  </script>
+{% endblock scripts %}
